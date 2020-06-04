@@ -5,6 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
 import CardComponent from "./components/CardComponent";
 import Columns from "react-columns";
+import GoogleMapReact from "google-map-react";
 
 function App() {
   const [totalStats, setTotalStats] = useState([]);
@@ -32,6 +33,27 @@ function App() {
     return searchCountries === "" ? country : country.country.toLowerCase().startsWith(searchCountries);
   })
 
+  const countriesLocation = byCountries.map((country, i) => {
+    return (
+      <div
+        lat={country.countryInfo.lat}
+        lng={country.countryInfo.long}
+        style={{
+          color: "red",
+          background: "#FFF",
+          height: "25px",
+          width: "35px",
+          textAlign: "center",
+          borderRadius: "20%",
+        }}
+      >
+        <img height="10px" src={country.countryInfo.flag} />
+        <br />
+        {country.cases}
+      </div>
+    )
+  })
+
   const queries = [{
     columns: 2,
     query: 'min-width: 500px'
@@ -43,7 +65,9 @@ function App() {
   return (
     <div>
       <br />
-      <h2 style={{ textAlign: "center", fontFamily: "Lucia"}}>Covid-19 Live Stats</h2>
+      <h2 style={{ textAlign: "center", fontFamily: "Lucia" }}>
+        Covid-19 Live Stats
+      </h2>
       <CardDeck>
         <Card
           bg="secondary"
@@ -89,23 +113,30 @@ function App() {
         </Card>
       </CardDeck>
 
-      <Form style={{ margin: "10px"}}>
+      <div style={{ height: "100vh", width: "100%" }}>
+        <GoogleMapReact
+          bootstrapURLKeys={{ key: "AIzaSyAnHw5gW1ik8KIePAgp3De8lHtmPXB6L1g" }}
+          defaultCenter={{ lat: 34, lng: 9}}
+          defaultZoom={1}
+        >
+          {countriesLocation}
+        </GoogleMapReact>
+      </div>
+
+      <Form style={{ margin: "10px" }}>
         <Form.Group controlId="formGroupSearch">
-          <Form.Control 
-            type="" 
-            placeholder="Search a Country" 
-            onChange={e => setSearchCountries(e.target.value.toLowerCase())}
+          <Form.Control
+            type=""
+            placeholder="Search a Country"
+            onChange={(e) => setSearchCountries(e.target.value.toLowerCase())}
           />
         </Form.Group>
       </Form>
 
       <Columns queries={queries}>
-          {filterCountries.map((country, i) => (
-              <CardComponent
-                key={i}
-                country={country}
-              />
-          ))}
+        {filterCountries.map((country, i) => (
+          <CardComponent key={i} country={country} />
+        ))}
       </Columns>
     </div>
   );
