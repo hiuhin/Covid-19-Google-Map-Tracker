@@ -5,7 +5,7 @@ export default function CardComponent(props) {
     const country = props.country;
 
     return (
-      <Card style={{ margin: "10px" }}>
+      <Card style={{ margin: "5px"}}>
         <Card.Img variant="top" src={country.countryInfo.flag} />
         <Card.Body>
           <Card.Title className="text-center">{country.country}</Card.Title>

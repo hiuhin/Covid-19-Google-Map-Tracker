@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Card from "react-bootstrap/Card";
-import {CardDeck} from "react-bootstrap";
+import {CardDeck, Form} from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
 import CardComponent from "./components/CardComponent";
@@ -9,6 +9,8 @@ import Columns from "react-columns";
 function App() {
   const [totalStats, setTotalStats] = useState([]);
   const [byCountries, setByCountries] = useState([]);
+  const [searchCountries, setSearchCountries] = useState("");
+
   useEffect(() => {
     axios
       .all([
@@ -25,6 +27,11 @@ function App() {
   }, []);
 
   const lastUpdatedDate = new Date(totalStats.updated).toString();
+  
+  const filterCountries = byCountries.filter(country => {
+    return searchCountries === "" ? country : country.country.toLowerCase().startsWith(searchCountries);
+  })
+
   const queries = [{
     columns: 2,
     query: 'min-width: 500px'
@@ -34,7 +41,9 @@ function App() {
   }];
 
   return (
-    <div className="App">
+    <div>
+      <br />
+      <h2 style={{ textAlign: "center", fontFamily: "Lucia"}}>Covid-19 Live Stats</h2>
       <CardDeck>
         <Card
           bg="secondary"
@@ -79,15 +88,25 @@ function App() {
           </Card.Footer>
         </Card>
       </CardDeck>
-        <Columns queries={queries}>
-          {byCountries.map((country, i) => (
-            <CardComponent
-              key={i}
-              country={country}
-              style={{ margin: "10px" }}
-            />
+
+      <Form style={{ margin: "10px"}}>
+        <Form.Group controlId="formGroupSearch">
+          <Form.Control 
+            type="" 
+            placeholder="Search a Country" 
+            onChange={e => setSearchCountries(e.target.value.toLowerCase())}
+          />
+        </Form.Group>
+      </Form>
+
+      <Columns queries={queries}>
+          {filterCountries.map((country, i) => (
+              <CardComponent
+                key={i}
+                country={country}
+              />
           ))}
-        </Columns>
+      </Columns>
     </div>
   );
 }
