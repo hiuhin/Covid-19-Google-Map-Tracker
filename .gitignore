@@ -4,6 +4,8 @@
 /node_modules
 /.pnp
 .pnp.js
+/src/Google_API_Key.js
+
 
 # testing
 /coverage
@@ -22,4 +24,4 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-/src/Google_API_Keys.js
+
