@@ -7,6 +7,8 @@ import CardComponent from "./components/CardComponent";
 import Columns from "react-columns";
 import GoogleMapReact from "google-map-react";
 
+const Google_API_Key = require("./Google_API_Key")
+
 function App() {
   const [totalStats, setTotalStats] = useState([]);
   const [byCountries, setByCountries] = useState([]);
@@ -113,10 +115,10 @@ function App() {
         </Card>
       </CardDeck>
 
-      <div style={{ height: "100vh", width: "100%" }}>
+      <div style={{ height: "50vh", width: "100%" }}>
         <GoogleMapReact
-          bootstrapURLKeys={{ key: "AIzaSyAnHw5gW1ik8KIePAgp3De8lHtmPXB6L1g" }}
-          defaultCenter={{ lat: 34, lng: 9}}
+          bootstrapURLKeys={Google_API_Key}
+          defaultCenter={{ lat: 34, lng: 9 }}
           defaultZoom={1}
         >
           {countriesLocation}
